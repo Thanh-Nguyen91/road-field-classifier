@@ -140,7 +140,7 @@ if __name__=="__main__":
     
     inference = Inference(cfg,device)
 
-    inference.process_directory("data/test_images",save_fig=True)
+    inference.process_directory("test_images",save_fig=True)
 
     # result = inference.process_one_image("data/test_images/2.jpeg")
     # print(result)
