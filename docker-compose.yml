@@ -1,0 +1,82 @@
+version: '3.7'
+services:
+  train:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python train.py
+    stdin_open: true
+    tty: true
+    shm_size: '100gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0']
+            capabilities: [gpu]
+    volumes:
+      - ./:/app
+      - /media/user/data:/data
+    environment:
+      PYTHONPATH: .
+      CONFIG_FILE: configs/config.yml
+
+  valid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python valid.py
+    stdin_open: true
+    tty: true
+    shm_size: '100gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0']
+            capabilities: [gpu]
+    volumes:
+      - ./:/app
+      - /media/user/data:/data
+    environment:
+      PYTHONPATH: .
+      CONFIG_FILE: configs/config.yml
+
+
+  inference:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python inference.py
+    stdin_open: true
+    tty: true
+    shm_size: '100gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0']
+            capabilities: [gpu]
+    volumes:
+      - ./:/app
+      - /media/user/data:/data
+    environment:
+      PYTHONPATH: .
+      CONFIG_FILE: configs/config.yml
+
+  tensorboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: tensorboard --host 0.0.0.0 --port 6007 --logdir=/logs
+    ports:
+      - 1257:6007
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./logs:/logs
+    environment:
+      PYTHONPATH: .
