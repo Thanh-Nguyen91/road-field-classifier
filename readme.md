@@ -27,13 +27,34 @@ This repository contains codes to build a classification model to classify image
     ├── test_images_result.txt    # prediction of test_images
 ```
 
-## Environment setup
+## How to use the code
+### Environment setup
 ```
 conda env create -f environment.yml
 ```
 or
 ```
 docker compose build
+```
+
+### training
+change configuration in `configs/config.yml` and run training with
+```
+python train.py
+```
+or
+```
+docker compose up --build -d
+```
+
+### inference
+change configuration in `configs/config.yml` and run
+```
+python inference.py
+```
+or
+```
+docker compose up inference
 ```
 
 ## Data exploration
@@ -117,6 +138,14 @@ BCE loss
 Fbeta score : weighted harmonic mean of precision and recall, reaching its optimal value at 1 and its worst value at 0. The beta parameter represents the ratio of recall importance to precision importance. beta > 1 gives more weight to recall, while beta < 1 favors precision.
 Here we assume the equal importance and set beta = 1.
 
+### tensorboard
+learning curves of model trained on 3 folds: fold 0 (orange), fold 1 (blue), fold 2 (red)
+
+<p align="center">
+  <img src="demo/tensorboard/train.png" width="400" height="200" />
+  <img src="demo/tensorboard/val.png" width="400" height="200" />
+</p>
+
 ## Inference
 * process a single image: print model output
 * process by batch for a directory containning several images: 
@@ -135,26 +164,7 @@ Example of inference
 ## Further improvement
 * larger and more diversified dataset
 * bigger model with higher capacity
-* custommize loss function and validation metric: focal loss might work better
+* custommize loss function and validation metric: focal loss might work better (smoother learning curve and higher accuracy)
 * add more sophisticated data augmentation
 
-## How to use the code
-### training
-change configuration in `configs/config.yml` and run training with
-```
-python train.py
-```
-or
-```
-docker compose up --build -d
-```
 
-### inference
-change configuration in `configs/config.yml` and run
-```
-python inference.py
-```
-or
-```
-docker compose up inference
-```
