@@ -6,7 +6,7 @@ model:
   targets: ["fields","roads"]
 
 data:
-  base_path: data/train
+  base_path: ../data/train
   base_info: data.xlsx
 
 training:
